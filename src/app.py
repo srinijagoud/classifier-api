@@ -1,6 +1,6 @@
 """
 FastAPI app serving sentiment predictions from the fine-tuned DistilBERT model.
-Run: uvicorn src.app:app --reload
+Run command: uvicorn src.app:app --reload
 """
 
 from fastapi import FastAPI
@@ -13,7 +13,7 @@ MODEL_DIR = "Srinija2/sentiment-distilbert"
 
 app = FastAPI(title="Sentiment Classifier API")
 
-# Load model + tokenizer once at startup (not per-request — important for performance)
+# Load model + tokenizer once at startup , for performanc sake
 print("Loading model...")
 tokenizer = AutoTokenizer.from_pretrained(MODEL_DIR)
 model = AutoModelForSequenceClassification.from_pretrained(MODEL_DIR)
@@ -21,16 +21,13 @@ model.eval()  # inference mode, disables dropout etc.
 
 LABEL_MAP = {0: "negative", 1: "positive"}
 
-
 class PredictionRequest(BaseModel):
     text: str
-
 
 class PredictionResponse(BaseModel):
     text: str
     label: str
     confidence: float
-
 
 @app.get("/")
 def health_check():

@@ -1,7 +1,6 @@
 """
 Fine-tunes DistilBERT on the Rotten Tomatoes sentiment dataset.
 Logs metrics/params/model to MLflow.
-Run: python src/train.py
 """
 
 import pandas as pd
@@ -20,16 +19,13 @@ from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_sc
 MODEL_NAME = "distilbert-base-uncased"
 OUTPUT_DIR = "models/sentiment-distilbert"
 
-
 def load_data():
     train_df = pd.read_csv("data/train.csv")
     val_df = pd.read_csv("data/val.csv")
     return Dataset.from_pandas(train_df), Dataset.from_pandas(val_df)
 
-
 def tokenize_function(examples, tokenizer):
     return tokenizer(examples["text"], truncation=True, padding="max_length", max_length=128)
-
 
 def compute_metrics(eval_pred):
     logits, labels = eval_pred
@@ -41,15 +37,12 @@ def compute_metrics(eval_pred):
         "recall": recall_score(labels, preds),
     }
 
-
 def main():
     print("Loading data...")
     train_dataset, val_dataset = load_data()
-
     print(f"Loading tokenizer and model: {MODEL_NAME}")
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
     model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME, num_labels=2)
-
     print("Tokenizing datasets...")
     train_dataset = train_dataset.map(lambda x: tokenize_function(x, tokenizer), batched=True)
     val_dataset = val_dataset.map(lambda x: tokenize_function(x, tokenizer), batched=True)
@@ -66,7 +59,7 @@ def main():
         load_best_model_at_end=True,
         metric_for_best_model="f1",
         logging_steps=50,
-        report_to="none",  # we'll log manually to mlflow
+        report_to="none",  # log manually to mlflow
     )
 
     trainer = Trainer(

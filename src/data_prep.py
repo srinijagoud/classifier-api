@@ -11,7 +11,6 @@ def load_and_prepare_data(save_dir="data"):
     print("Loading rotten_tomatoes dataset from Hugging Face...")
     dataset = load_dataset("rotten_tomatoes")
 
-    # dataset has 'train', 'validation', 'test' splits already
     train_df = dataset["train"].to_pandas()
     val_df = dataset["validation"].to_pandas()
     test_df = dataset["test"].to_pandas()
@@ -20,13 +19,13 @@ def load_and_prepare_data(save_dir="data"):
     print(f"Validation size: {len(val_df)}")
     print(f"Test size: {len(test_df)}")
 
-    # Basic sanity checks
+
     print("\nLabel distribution (train):")
     print(train_df["label"].value_counts())
     print("\nSample row:")
     print(train_df.iloc[0])
 
-    # Save locally as CSV so later scripts don't need to hit the Hub every time
+   
     os.makedirs(save_dir, exist_ok=True)
     train_df.to_csv(f"{save_dir}/train.csv", index=False)
     val_df.to_csv(f"{save_dir}/val.csv", index=False)
