@@ -36,7 +36,7 @@ Fine-tuned for 2 epochs on *~8,500* training examples:
 | --- | --- |
 | Accuracy | 85.8% |
 | F1 | 0.858 |
-| Precision |	0.859 |
+| Precision | 0.859 |
 | Recall | 0.857 |
 
 ## Tech Stack
@@ -86,9 +86,13 @@ json
 ## Running Locally
 ## Clone and set up environment
 gitclone  https://github.com/srinijagoud/classifier-api.git
+
 cd classifier-api
+
 python -m venv venv
+
 venv\Scripts\activate 
+
 pip install -r requirements.txt
 
 ## Run the API
